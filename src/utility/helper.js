@@ -18,6 +18,17 @@ class Helper {
   };
 
   /**
+   * @method comparePassword
+   * @param storedPassword
+   * @param givenPassword
+   * @description For compare encrypted storedPassword with user provided givenPassword
+   */
+  comparePassword = async (givenPassword, storedPassword) => {
+    let result = bcrypt.compare(givenPassword, storedPassword);
+    return result;
+  };
+
+  /**
    * @description For validate the data which is provided by user for login or register or reset
    */
   validationSchema = joi.object({

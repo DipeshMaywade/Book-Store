@@ -9,7 +9,7 @@ const { GraphQLNonNull, GraphQLString } = require('graphql');
 const loggers = require('../../utility/logger');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
-const { passEncrypt, validationSchema } = require('../../utility/helper');
+const { passEncrypt, validationSchema, comparePassword } = require('../../utility/helper');
 
 class Mutation {
   /**
@@ -102,6 +102,13 @@ class Mutation {
           return {
             success: false,
             message: 'incorrect email, user not Found',
+          };
+        }
+        let isValid = await comparePassword(args.password, user.password);
+        if (!isValid) {
+          return {
+            success: false,
+            message: 'incorrect password.',
           };
         }
         return {
