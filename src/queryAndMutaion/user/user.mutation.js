@@ -8,6 +8,7 @@
 const { GraphQLNonNull, GraphQLString } = require('graphql');
 const loggers = require('../../utility/logger');
 const sentToSQS = require('../../utility/sqsService/publisher');
+const consumefromSQS = require('../../utility/sqsService/consumer');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
 const { verifyMail } = require('../../utility/sesService/verifyMail');
@@ -128,10 +129,10 @@ class Mutation {
           return { success: false, message: 'Incorrrect Email User Not Found..' };
         }
         let payload = { id: user.id, email: user.email };
-        response.token = await jwtGenerator(payload);
-        await sentToSQS(user.email, response.token);
-        //let message = await consumefromSQS();
-        return { success: true, message: 'Mail sent to the registered email id' };
+        let token = await jwtGenerator(payload);
+        await sentToSQS(user.email, token);
+        await consumefromSQS();
+        return { success: true, message: `Mail sent to the registered email id token is ${token}` };
       } catch (error) {
         loggers.error(`error`, error);
         return { success: false, message: 'email not sent check your error log file' };
