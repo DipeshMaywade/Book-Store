@@ -100,6 +100,42 @@ class Mutation {
       }
     },
   };
+
+  /**
+   * @fileds forgotPassword
+   * @type outputType
+   * @param {resolveParameter} root
+   * @param {resolveParameter} args
+   * @description forgotPassword fields provide ability to send mail on registered email ID with reset password token.
+   */
+  forgotPassword = {
+    type: response,
+    args: {
+      email: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: async (root, args) => {
+      let result = validationSchema.validate(args);
+      if (result.error) {
+        return { success: false, message: 'Validation failed' };
+      }
+      try {
+        let user = await userRegistration.findOne({ email: args.email });
+        if (!user) {
+          return { success: false, message: 'Incorrrect Email User Not Found..' };
+        }
+        let payload = { id: user.id, email: user.email };
+        response.token = await jwtGenerator(payload);
+        await sentToSQS(user.email, response.token);
+        //let message = await consumefromSQS();
+        return { success: true, message: 'Mail sent to the registered email id' };
+      } catch (error) {
+        loggers.error(`error`, error);
+        return { success: false, message: 'email not sent check your error log file' };
+      }
+    },
+  };
 }
 
 module.exports = new Mutation();
