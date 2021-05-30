@@ -38,6 +38,19 @@ class Helper {
     password: joi.string().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()]{1}).{8,}$')),
     role: joi.string(),
   });
+
+  /**
+   * @method jwtGenerator
+   * @param {object} payload
+   * @description jwtGenerator method for genrate a json web token with secret the help of SECRET_KEY.
+   */
+  jwtGenerator = (payload) => {
+    try {
+      return jwt.sign({ payload }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    } catch (error) {
+      logger.error('error', error);
+    }
+  };
 }
 
 module.exports = new Helper();
