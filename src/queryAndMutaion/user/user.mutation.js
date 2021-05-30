@@ -12,12 +12,13 @@ const consumefromSQS = require('../../utility/sqsService/consumer');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
 const { verifyMail } = require('../../utility/sesService/verifyMail');
+const { checkAuth } = require('../../utility/auth');
 const { passEncrypt, validationSchema, comparePassword, jwtGenerator } = require('../../utility/helper');
 
 class Mutation {
   /**
    * @fileds addUser
-   * @type userType
+   * @type response
    * @argument args
    * @param {resolveParameter} root
    * @param {resolveParameter} data
@@ -65,7 +66,7 @@ class Mutation {
 
   /**
    * @fileds loginUser
-   * @type outputType
+   * @type response
    * @param {resolveParameter} root
    * @param {resolveParameter} args
    * @description login fields provide ability to user login with correct email and password and genrate a tocken.
@@ -106,7 +107,7 @@ class Mutation {
 
   /**
    * @fileds forgotPassword
-   * @type outputType
+   * @type response
    * @param {resolveParameter} root
    * @param {resolveParameter} args
    * @description forgotPassword fields provide ability to send mail on registered email ID with reset password token.
@@ -136,6 +137,47 @@ class Mutation {
       } catch (error) {
         loggers.error(`error`, error);
         return { success: false, message: 'email not sent check your error log file' };
+      }
+    },
+  };
+
+  /**
+   * @fileds resetPassword
+   * @type response
+   * @param {resolveParameter} root
+   * @param {resolveParameter} args
+   * @param {resolveParameter} context
+   * @description resetPassword provide ability to reset password only for authenticate user using jwt.
+   */
+  resetPassword = {
+    type: response,
+    args: {
+      newPassword: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      confirmPassword: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: async (_, args, context) => {
+      const verifiedUser = await checkAuth(context);
+      let result = validationSchema.validate(args);
+      if (args.newPassword === args.confirmPassword && !result.error) {
+        try {
+          if (!verifiedUser) {
+            return { success: false, message: 'invalid token' };
+          }
+          let newPassword = await passEncrypt(args.confirmPassword);
+          await userRegistration.findByIdAndUpdate(verifiedUser.payload.id, {
+            password: newPassword,
+          });
+          return { success: true, message: 'password updated.' };
+        } catch (error) {
+          loggers.error(`error`, error);
+          return { success: false, message: 'check error in your log file' };
+        }
+      } else {
+        return { success: false, message: 'password does not matched or invalid formate' };
       }
     },
   };
