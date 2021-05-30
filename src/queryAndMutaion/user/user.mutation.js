@@ -7,6 +7,7 @@
 ----------------------------------------------------------------------------------------------------*/
 const { GraphQLNonNull, GraphQLString } = require('graphql');
 const loggers = require('../../utility/logger');
+const sentToSQS = require('../../utility/sqsService/publisher');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
 const { passEncrypt, validationSchema, comparePassword, jwtGenerator } = require('../../utility/helper');
