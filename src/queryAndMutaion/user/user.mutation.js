@@ -10,6 +10,7 @@ const loggers = require('../../utility/logger');
 const sentToSQS = require('../../utility/sqsService/publisher');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
+const { verifyMail } = require('../../utility/sesService/verifyMail');
 const { passEncrypt, validationSchema, comparePassword, jwtGenerator } = require('../../utility/helper');
 
 class Mutation {
@@ -52,6 +53,7 @@ class Mutation {
         if (!newUser) {
           return { success: false, message: 'failed to save' };
         }
+        await verifyMail(newUser.email);
         return { success: true, message: 'new user added successfully...!!' };
       } catch (error) {
         loggers.error(`error`, error);
