@@ -11,7 +11,7 @@ const port = process.env.PORT;
 const host = process.env.HOST;
 
 app.use(
-  '/graphql',
+  '/BookStore',
   graphqlHTTP({
     schema,
     graphiql: true,
