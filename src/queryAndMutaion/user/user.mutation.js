@@ -6,6 +6,7 @@
  * @author        Dipesh Maywade <dipeshmaywade@gmail.com>
 ----------------------------------------------------------------------------------------------------*/
 const { GraphQLNonNull, GraphQLString } = require('graphql');
+const loggers = require('../../utility/logger');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
 
@@ -55,7 +56,7 @@ class Mutation {
         loggers.error(`error`, error);
         return {
           success: false,
-          message: 'failed to save',
+          message: `failed to save ${error}`,
         };
       }
     },

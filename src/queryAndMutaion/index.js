@@ -9,10 +9,10 @@
 
 const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const { addUser } = require('./user/user.mutation');
-
+const { getUser } = require('./user/user.query');
 const query = new GraphQLObjectType({
   name: 'Query',
-  fields: {},
+  fields: { getUser },
 });
 
 const mutation = new GraphQLObjectType({
