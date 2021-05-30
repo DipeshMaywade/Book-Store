@@ -9,6 +9,7 @@ const { GraphQLNonNull, GraphQLString } = require('graphql');
 const loggers = require('../../utility/logger');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
+const { passEncrypt } = require('../../utility/helper');
 
 class Mutation {
   /**
@@ -40,6 +41,7 @@ class Mutation {
     },
     resolve: async (root, data) => {
       try {
+        data.password = await passEncrypt(data.password);
         const userModel = new userRegistration(data);
         const newUser = await userModel.save();
         if (!newUser) {
