@@ -16,7 +16,7 @@ class Query {
     type: new GraphQLList(userType),
     resolve: async () => {
       const users = await userRegistration.find();
-      return users ? users : [{ firstName: 'No users Found' }];
+      return users.length != 0 ? users : [{ firstName: 'No users Found' }];
     },
   };
 }
