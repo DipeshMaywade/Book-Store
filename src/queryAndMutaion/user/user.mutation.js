@@ -9,7 +9,7 @@ const { GraphQLNonNull, GraphQLString } = require('graphql');
 const loggers = require('../../utility/logger');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
-const { passEncrypt, validationSchema, comparePassword } = require('../../utility/helper');
+const { passEncrypt, validationSchema, comparePassword, jwtGenerator } = require('../../utility/helper');
 
 class Mutation {
   /**
@@ -111,9 +111,14 @@ class Mutation {
             message: 'incorrect password.',
           };
         }
+        let payload = {
+          id: user.id,
+          email: user.email,
+        };
+        let token = await jwtGenerator(payload);
         return {
           success: true,
-          message: 'Login successful',
+          message: `Login successfull your token is: ${token} `,
         };
       } catch (error) {
         loggers.error(`error`, error);

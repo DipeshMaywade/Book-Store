@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const joi = require('joi');
 const jwt = require('jsonwebtoken');
 const logger = require('./logger');
+require('dotenv').config();
 
 class Helper {
   /**
