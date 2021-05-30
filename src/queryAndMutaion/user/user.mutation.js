@@ -42,31 +42,19 @@ class Mutation {
     resolve: async (root, data) => {
       const result = validationSchema.validate(data);
       if (result.error) {
-        return {
-          success: false,
-          message: 'Validation failed',
-        };
+        return { success: false, message: 'Validation failed' };
       }
       try {
         data.password = await passEncrypt(data.password);
         const userModel = new userRegistration(data);
         const newUser = await userModel.save();
         if (!newUser) {
-          return {
-            success: false,
-            message: 'failed to save',
-          };
+          return { success: false, message: 'failed to save' };
         }
-        return {
-          success: true,
-          message: 'new user added successfully...!!',
-        };
+        return { success: true, message: 'new user added successfully...!!' };
       } catch (error) {
         loggers.error(`error`, error);
-        return {
-          success: false,
-          message: `failed to save ${error}`,
-        };
+        return { success: false, message: `failed to save ${error}` };
       }
     },
   };
@@ -91,41 +79,26 @@ class Mutation {
     resolve: async (root, args) => {
       const result = validationSchema.validate(args);
       if (result.error) {
-        return {
-          success: false,
-          message: 'Validation failed',
-        };
+        return { success: false, message: 'Validation failed' };
       }
       try {
         let user = await userRegistration.findOne({ email: args.email });
         if (!user) {
-          return {
-            success: false,
-            message: 'incorrect email, user not Found',
-          };
+          return { success: false, message: 'incorrect email, user not Found' };
         }
         let isValid = await comparePassword(args.password, user.password);
         if (!isValid) {
-          return {
-            success: false,
-            message: 'incorrect password.',
-          };
+          return { success: false, message: 'incorrect password.' };
         }
         let payload = {
           id: user.id,
           email: user.email,
         };
         let token = await jwtGenerator(payload);
-        return {
-          success: true,
-          message: `Login successfull your token is: ${token} `,
-        };
+        return { success: true, message: `Login successfull your token is: ${token} ` };
       } catch (error) {
         loggers.error(`error`, error);
-        return {
-          success: false,
-          message: 'failed, check your log file',
-        };
+        return { success: false, message: 'failed, check your log file' };
       }
     },
   };
