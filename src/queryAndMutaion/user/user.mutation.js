@@ -90,10 +90,7 @@ class Mutation {
         if (!isValid) {
           return { success: false, message: 'incorrect password.' };
         }
-        let payload = {
-          id: user.id,
-          email: user.email,
-        };
+        let payload = { id: user.id, email: user.email };
         let token = await jwtGenerator(payload);
         return { success: true, message: `Login successfull your token is: ${token} ` };
       } catch (error) {
