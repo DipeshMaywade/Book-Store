@@ -70,6 +70,53 @@ class Mutation {
       }
     },
   };
+
+  /**
+   * @fileds loginUser
+   * @type outputType
+   * @param {resolveParameter} root
+   * @param {resolveParameter} args
+   * @description login fields provide ability to user login with correct email and password and genrate a tocken.
+   */
+  loginUser = {
+    type: response,
+    args: {
+      email: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      password: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: async (root, args) => {
+      const result = validationSchema.validate(args);
+      if (result.error) {
+        return {
+          success: false,
+          message: 'Validation failed',
+        };
+      }
+      try {
+        let user = await userRegistration.findOne({ email: args.email });
+        if (!user) {
+          return {
+            success: false,
+            message: 'incorrect email, user not Found',
+          };
+        }
+        return {
+          success: true,
+          message: 'Login successful',
+        };
+      } catch (error) {
+        loggers.error(`error`, error);
+        return {
+          success: false,
+          message: 'failed, check your log file',
+        };
+      }
+    },
+  };
 }
 
 module.exports = new Mutation();
