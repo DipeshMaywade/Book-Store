@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('./src/utility/logger');
+require('./config/dbConfig');
 require('dotenv').config();
 
 const app = express();
