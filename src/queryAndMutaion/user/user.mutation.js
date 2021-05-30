@@ -9,7 +9,7 @@ const { GraphQLNonNull, GraphQLString } = require('graphql');
 const loggers = require('../../utility/logger');
 const { userRegistration } = require('../../models/user');
 const { userType, response } = require('../../type/user');
-const { passEncrypt } = require('../../utility/helper');
+const { passEncrypt, validationSchema } = require('../../utility/helper');
 
 class Mutation {
   /**
@@ -40,6 +40,13 @@ class Mutation {
       },
     },
     resolve: async (root, data) => {
+      const result = validationSchema.validate(data);
+      if (result.error) {
+        return {
+          success: false,
+          message: 'Validation failed',
+        };
+      }
       try {
         data.password = await passEncrypt(data.password);
         const userModel = new userRegistration(data);
