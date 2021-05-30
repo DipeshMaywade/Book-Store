@@ -1,6 +1,6 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
-const schema = require('./src/queryAndMutation/index');
+const schema = require('./src/queryAndMutaion/index');
 const logger = require('./src/utility/logger');
 require('./config/dbConfig');
 require('dotenv').config();

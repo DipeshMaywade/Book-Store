@@ -61,3 +61,5 @@ class Mutation {
     },
   };
 }
+
+module.exports = new Mutation();
