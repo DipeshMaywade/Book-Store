@@ -10,13 +10,18 @@
 const { GraphQLList } = require('graphql');
 const { userType } = require('../../type/user');
 const { userRegistration } = require('../../models/user');
+const logger = require('../../utility/logger');
 
 class Query {
   getUser = {
     type: new GraphQLList(userType),
     resolve: async () => {
-      const users = await userRegistration.find();
-      return users.length != 0 ? users : [{ firstName: 'No users Found' }];
+      try {
+        const users = await userRegistration.find();
+        return users.length != 0 ? users : [{ firstName: 'No users Found' }];
+      } catch (error) {
+        logger.log('error', `Error in getting users ${error} `);
+      }
     },
   };
 }
