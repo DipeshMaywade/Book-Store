@@ -29,6 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.9",
     "mongoose": "^5.12.12",
+    "sqs-consumer": "^5.5.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
