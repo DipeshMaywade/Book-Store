@@ -1,5 +1,5 @@
 const { response } = require('../../type/books');
-const { GraphQLNonNull, GraphQLString } = require('graphql');
+const { GraphQLNonNull, GraphQLString, GraphQLID } = require('graphql');
 const loggers = require('../../utility/logger');
 const { book } = require('../../models/book');
 const { checkAuth } = require('../../utility/auth');
@@ -43,7 +43,7 @@ class Mutation {
       }
       const verifyAdmin = await checkAuth(context);
       if (verifyAdmin.payload.role != 'Admin') {
-        return { success: true, message: 'only admin has ability to add new book' };
+        return { success: false, message: 'only admin has ability to add new book' };
       }
       try {
         data.adminId = verifyAdmin.payload.id;
@@ -56,6 +56,56 @@ class Mutation {
       } catch (error) {
         loggers.error(`error`, error);
         return { success: false, message: `failed to save ${error}` };
+      }
+    },
+  };
+
+  updateBook = {
+    type: response,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      author: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      title: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      quantity: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      price: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      description: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+      image: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: async (root, args, context) => {
+      try {
+        const verifyAdmin = await checkAuth(context);
+        if (verifyAdmin.payload.role != 'Admin') {
+          return { success: false, message: 'only admin has ability to update book details' };
+        } else {
+          const updatedBook = {
+            author: args.author,
+            title: args.title,
+            quantity: args.quantity,
+            price: args.price,
+            description: args.description,
+            image: args.image,
+            adminId: verifyAdmin.payload.id,
+          };
+          const booksUpdate = await book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
+          return !booksUpdate ? { success: false, message: 'failed' } : { success: true, message: 'Book Updated', data: booksUpdate };
+        }
+      } catch (error) {
+        loggers.error(`error`, error);
+        return { title: error };
       }
     },
   };
