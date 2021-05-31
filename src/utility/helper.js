@@ -45,6 +45,7 @@ class Helper {
   });
 
   bookValidation = joi.object({
+    id: joi.string(),
     author: joi.string().required().min(3),
     title: joi.string().required().min(3),
     quantity: joi.number(),

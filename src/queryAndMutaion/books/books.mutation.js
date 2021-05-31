@@ -42,8 +42,8 @@ class Mutation {
         return { success: false, message: 'Validation failed' };
       }
       const verifyAdmin = await checkAuth(context);
-      if (verifyAdmin.payload.role != 'Admin') {
-        return { success: false, message: 'only admin has ability to add new book' };
+      if (verifyAdmin.payload.role != 'Admin' || !verifyAdmin) {
+        return { success: false, message: 'only admin has ability to update book details please login as an admin' };
       }
       try {
         data.adminId = verifyAdmin.payload.id;
@@ -92,8 +92,8 @@ class Mutation {
       }
       try {
         const verifyAdmin = await checkAuth(context);
-        if (verifyAdmin.payload.role != 'Admin') {
-          return { success: false, message: 'only admin has ability to update book details' };
+        if (verifyAdmin.payload.role != 'Admin' || !verifyAdmin) {
+          return { success: false, message: 'only admin has ability to update book details please login as an admin' };
         }
         const updatedBook = {
           author: args.author,
@@ -121,13 +121,12 @@ class Mutation {
       },
     },
     resolve: async (root, args, context) => {
-      const verifiedUser = await checkAuth(context);
       try {
         const verifyAdmin = await checkAuth(context);
-        if (verifyAdmin.payload.role != 'Admin') {
-          return { success: false, message: 'only admin has ability to update book details' };
+        if (verifyAdmin.payload.role != 'Admin' || !verifyAdmin) {
+          return { success: false, message: 'only admin has ability to update book details please login as an admin' };
         }
-        const BookDelete = await notes.findOneAndDelete({ _id: args.id });
+        const BookDelete = await book.findOneAndDelete({ _id: args.id });
         return !BookDelete ? { success: false, message: 'failed' } : { success: true, message: 'Book deleted successfully' };
       } catch (error) {
         loggers.error(`error`, error);
