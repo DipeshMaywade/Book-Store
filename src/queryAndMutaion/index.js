@@ -9,6 +9,7 @@
 
 const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const { addUser, loginUser, forgotPassword, resetPassword } = require('./user/user.mutation');
+const { addBook } = require('./books/books.mutation');
 const { getUser } = require('./user/user.query');
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -17,7 +18,7 @@ const query = new GraphQLObjectType({
 
 const mutation = new GraphQLObjectType({
   name: 'Mutations',
-  fields: { addUser, loginUser, forgotPassword, resetPassword },
+  fields: { addUser, loginUser, forgotPassword, resetPassword, addBook },
 });
 
 module.exports = new GraphQLSchema({

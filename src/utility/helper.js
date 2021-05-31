@@ -44,6 +44,15 @@ class Helper {
     confirmPassword: joi.string().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()]{1}).{8,}$')),
   });
 
+  bookValidation = joi.object({
+    author: joi.string().required().min(3),
+    title: joi.string().required().min(3),
+    quantity: joi.number(),
+    price: joi.number(),
+    description: joi.string().required().min(10),
+    image: joi.string().required(),
+  });
+
   /**
    * @method jwtGenerator
    * @param {object} payload
