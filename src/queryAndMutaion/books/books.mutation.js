@@ -86,26 +86,51 @@ class Mutation {
       },
     },
     resolve: async (root, args, context) => {
+      const result = bookValidation.validate(args);
+      if (result.error) {
+        return { success: false, message: 'Validation failed' };
+      }
       try {
         const verifyAdmin = await checkAuth(context);
         if (verifyAdmin.payload.role != 'Admin') {
           return { success: false, message: 'only admin has ability to update book details' };
-        } else {
-          const updatedBook = {
-            author: args.author,
-            title: args.title,
-            quantity: args.quantity,
-            price: args.price,
-            description: args.description,
-            image: args.image,
-            adminId: verifyAdmin.payload.id,
-          };
-          const booksUpdate = await book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
-          return !booksUpdate ? { success: false, message: 'failed' } : { success: true, message: 'Book Updated', data: booksUpdate };
         }
+        const updatedBook = {
+          author: args.author,
+          title: args.title,
+          quantity: args.quantity,
+          price: args.price,
+          description: args.description,
+          image: args.image,
+          adminId: verifyAdmin.payload.id,
+        };
+        const booksUpdate = await book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
+        return !booksUpdate ? { success: false, message: 'failed' } : { success: true, message: 'Book Updated', data: booksUpdate };
       } catch (error) {
         loggers.error(`error`, error);
         return { title: error };
+      }
+    },
+  };
+
+  deleteBook = {
+    type: response,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: async (root, args, context) => {
+      const verifiedUser = await checkAuth(context);
+      try {
+        const verifyAdmin = await checkAuth(context);
+        if (verifyAdmin.payload.role != 'Admin') {
+          return { success: false, message: 'only admin has ability to update book details' };
+        }
+        const BookDelete = await notes.findOneAndDelete({ _id: args.id });
+        return !BookDelete ? { success: false, message: 'failed' } : { success: true, message: 'Book deleted successfully' };
+      } catch (error) {
+        loggers.error(`error`, error);
       }
     },
   };
