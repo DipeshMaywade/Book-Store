@@ -36,12 +36,17 @@ class Mutation {
         type: new GraphQLNonNull(GraphQLString),
       },
     },
-    resolve: async (root, data) => {
+    resolve: async (root, data, context) => {
       const result = bookValidation.validate(data);
       if (result.error) {
         return { success: false, message: 'Validation failed' };
       }
+      const verifyAdmin = await checkAuth(context);
+      if (verifyAdmin.payload.role != 'Admin') {
+        return { success: true, message: 'only admin has ability to add new book' };
+      }
       try {
+        data.adminId = verifyAdmin.payload.id;
         const bookModel = new book(data);
         const newBook = await bookModel.save();
         if (!newBook) {
