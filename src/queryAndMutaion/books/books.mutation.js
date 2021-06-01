@@ -12,7 +12,7 @@ class Mutation {
    * @argument args
    * @param {resolveParameter} root
    * @param {resolveParameter} data
-   * @description addUser fields provide ability to create new user account for
+   * @description addBook fields provide ability to create new book by Admin
    */
   addBook = {
     type: response,
@@ -128,6 +128,25 @@ class Mutation {
         }
         const BookDelete = await book.findOneAndDelete({ _id: args.id });
         return !BookDelete ? { success: false, message: 'failed' } : { success: true, message: 'Book deleted successfully' };
+      } catch (error) {
+        loggers.error(`error`, error);
+      }
+    },
+  };
+
+  addToCart = {
+    type: response,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+      },
+    },
+    resolve: async (root, args) => {
+      try {
+        const addToBag = book.findByIdAndUpdate(args.id, { isAddedToBag: true }, { new: true });
+        return !addToBag
+          ? { success: false, message: 'failed to add into the cart' }
+          : { success: true, message: 'Book added into the cart', data: addToBag };
       } catch (error) {
         loggers.error(`error`, error);
       }
