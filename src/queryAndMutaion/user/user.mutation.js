@@ -5,7 +5,7 @@
  * @requires      graphql{@linkhttps://www.npmjs.com/package/graphql}
  * @author        Dipesh Maywade <dipeshmaywade@gmail.com>
 ----------------------------------------------------------------------------------------------------*/
-const { GraphQLNonNull, GraphQLString } = require('graphql');
+const { GraphQLNonNull, GraphQLString, GraphQLEnumType } = require('graphql');
 const loggers = require('../../utility/logger');
 const sentToSQS = require('../../utility/sqsService/publisher');
 const consumefromSQS = require('../../utility/sqsService/consumer');
@@ -40,7 +40,17 @@ class Mutation {
         type: new GraphQLNonNull(GraphQLString),
       },
       role: {
-        type: new GraphQLNonNull(GraphQLString),
+        type: new GraphQLEnumType({
+          name: 'Role',
+          values: {
+            Admin: {
+              value: 'Admin',
+            },
+            User: {
+              value: 'User',
+            },
+          },
+        }),
       },
     },
     resolve: async (root, data) => {
