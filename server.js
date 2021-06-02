@@ -19,6 +19,6 @@ app.use(
 );
 
 app.listen(port, () => {
-  logger.log(`info`, `Server Runing at http://${host}:${port}`);
-  console.log(`info`, `Server Runing at http://${host}:${port}`);
+  logger.log('info', `Server Runing at http://${host}:${port}`);
+  console.log('info', `Server Runing at http://${host}:${port}`);
 });
