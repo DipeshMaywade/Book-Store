@@ -9,7 +9,7 @@
 
 const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const { addUser, loginUser, forgotPassword, resetPassword } = require('./user/user.mutation');
-const { addBook, updateBook, deleteBook, addToCart } = require('./books/books.mutation');
+const { addBook, updateBook, deleteBook, addToCart, removeFromCart } = require('./books/books.mutation');
 const { getUser } = require('./user/user.query');
 const { getAllBooks } = require('./books/books.query');
 
@@ -20,7 +20,7 @@ const query = new GraphQLObjectType({
 
 const mutation = new GraphQLObjectType({
   name: 'Mutations',
-  fields: { addUser, loginUser, forgotPassword, resetPassword, addBook, updateBook, deleteBook, addToCart },
+  fields: { addUser, loginUser, forgotPassword, resetPassword, addBook, updateBook, deleteBook, addToCart, removeFromCart },
 });
 
 module.exports = new GraphQLSchema({

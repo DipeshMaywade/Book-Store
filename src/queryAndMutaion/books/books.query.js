@@ -9,7 +9,7 @@
 
 const { GraphQLList } = require('graphql');
 const { bookType } = require('../../type/books');
-const { book } = require('../../models/book');
+const { Book } = require('../../models/book');
 const logger = require('../../utility/logger');
 
 class Query {
@@ -17,7 +17,7 @@ class Query {
     type: new GraphQLList(bookType),
     resolve: async () => {
       try {
-        const books = await book.find();
+        const books = await Book.find();
         return books.length != 0 ? books : [{ success: false, message: 'No Books Found' }];
       } catch (error) {
         logger.log('error', `Error in getting books ${error} `);

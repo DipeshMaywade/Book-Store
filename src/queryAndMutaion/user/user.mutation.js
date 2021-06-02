@@ -9,7 +9,7 @@ const { GraphQLNonNull, GraphQLString, GraphQLEnumType } = require('graphql');
 const loggers = require('../../utility/logger');
 const sentToSQS = require('../../utility/sqsService/publisher');
 const consumefromSQS = require('../../utility/sqsService/consumer');
-const { userRegistration } = require('../../models/user');
+const { UserCollection } = require('../../models/user');
 const { response } = require('../../type/user');
 const { verifyMail } = require('../../utility/sesService/verifyMail');
 const { checkAuth } = require('../../utility/auth');
@@ -61,7 +61,7 @@ class Mutation {
       try {
         data.password = await passEncrypt(data.password);
         const userModel = new userRegistration(data);
-        const newUser = await userModel.save();
+        const newUser = await UserCollection.save();
         if (!newUser) {
           return { success: false, message: 'failed to save' };
         }
@@ -97,7 +97,7 @@ class Mutation {
         return { success: false, message: 'Validation failed' };
       }
       try {
-        let user = await userRegistration.findOne({ email: args.email });
+        let user = await UserCollection.findOne({ email: args.email });
         if (!user) {
           return { success: false, message: 'incorrect email, user not Found' };
         }
@@ -135,7 +135,7 @@ class Mutation {
         return { success: false, message: 'Validation failed' };
       }
       try {
-        let user = await userRegistration.findOne({ email: args.email });
+        let user = await UserCollection.findOne({ email: args.email });
         if (!user) {
           return { success: false, message: 'Incorrrect Email User Not Found..' };
         }
@@ -178,7 +178,7 @@ class Mutation {
             return { success: false, message: 'invalid token' };
           }
           let newPassword = await passEncrypt(args.confirmPassword);
-          await userRegistration.findByIdAndUpdate(verifiedUser.payload.id, {
+          await UserCollection.findByIdAndUpdate(verifiedUser.payload.id, {
             password: newPassword,
           });
           return { success: true, message: 'password updated.' };

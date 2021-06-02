@@ -1,7 +1,7 @@
 const { response } = require('../../type/books');
 const { GraphQLNonNull, GraphQLString, GraphQLID } = require('graphql');
 const loggers = require('../../utility/logger');
-const { book } = require('../../models/book');
+const { Book } = require('../../models/book');
 const { checkAuth } = require('../../utility/auth');
 const { bookValidation } = require('../../utility/helper');
 
@@ -47,7 +47,7 @@ class Mutation {
       }
       try {
         data.adminId = verifyAdmin.payload.id;
-        const bookModel = new book(data);
+        const bookModel = new Book(data);
         const newBook = await bookModel.save();
         if (!newBook) {
           return { success: false, message: 'failed to save' };
@@ -104,7 +104,7 @@ class Mutation {
           image: args.image,
           adminId: verifyAdmin.payload.id,
         };
-        const booksUpdate = await book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
+        const booksUpdate = await Book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
         return !booksUpdate ? { success: false, message: 'failed' } : { success: true, message: 'Book Updated', data: booksUpdate };
       } catch (error) {
         loggers.error(`error`, error);
@@ -126,7 +126,7 @@ class Mutation {
         if (verifyAdmin.payload.role != 'Admin' || !verifyAdmin) {
           return { success: false, message: 'only admin has ability to update book details please login as an admin' };
         }
-        const BookDelete = await book.findOneAndDelete({ _id: args.id });
+        const BookDelete = await Book.findOneAndDelete({ _id: args.id });
         return !BookDelete ? { success: false, message: 'failed' } : { success: true, message: 'Book deleted successfully' };
       } catch (error) {
         loggers.error(`error`, error);
@@ -143,10 +143,27 @@ class Mutation {
     },
     resolve: async (root, args) => {
       try {
-        const addToBag = book.findByIdAndUpdate(args.id, { isAddedToBag: true }, { new: true });
+        const addToBag = await Book.findByIdAndUpdate(args.id, { isAddedToBag: true }, { new: true });
         return !addToBag
           ? { success: false, message: 'failed to add into the cart' }
           : { success: true, message: 'Book added into the cart', data: addToBag };
+      } catch (error) {
+        loggers.error(`error`, error);
+      }
+    },
+  };
+
+  removeFromCart = {
+    type: response,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+      },
+    },
+    resolve: async (root, args) => {
+      try {
+        const data = await Book.findByIdAndUpdate(args.id, { isAddedToBag: false });
+        return !data ? { success: false, message: 'failed..' } : { success: true, message: 'Book removed from the cart', data: data };
       } catch (error) {
         loggers.error(`error`, error);
       }
