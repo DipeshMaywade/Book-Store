@@ -1,4 +1,4 @@
-# **FundooNotes (similar as Google Keep Backend)**
+# **Boook Store **
 
 <br>
 
@@ -12,13 +12,13 @@
 
 ## **Description**
 
-> ### This project's backend is developed as similar of **[Google Keep](https://keep.google.com/)** aplication's backend.
+> ### In Book store user has ability to see all availble book and details related to book and he can able to add to cart and remove it and admin has ability to perform CRUD in database where user perform read oprtaion.
 
 ## Project Setup Steps
 
 > ### Step1:
 >
-> Clone the repository in your system using this command "git clone https://github.com/DipeshMaywade/FundooApp"
+> Clone the repository in your system using this command "git clone https://github.com/DipeshMaywade/Book-Store"
 
 > ### Step2:
 >
@@ -41,7 +41,6 @@
 > - **[Visual Studio Code](https://www.youtube.com/watch?v=MlIzFUI1QGA)**(Code Editor IDE)
 > - **[MongoDB Compass](https://www.youtube.com/watch?v=FwMwO8pXfq0)**(Database and UI)
 > - **[Redis](https://www.youtube.com/watch?v=188Fy-oCw4w)**(For Caching)
-> - **[RabbitMQ](https://www.youtube.com/watch?v=V9DWKbalbWQ)**(For mail sending in queue)
 > - **[GraphiQL](https://www.electronjs.org/apps/graphiql)**(For Testing)
 > - **[Postman](https://www.youtube.com/watch?v=MCPdfuzmyxY)**(For Testing)
 
