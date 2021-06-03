@@ -1,3 +1,10 @@
+/**
+ * @module       queryAndMutaion/books   
+ * @file         book.mutation.js
+ * @description  class mutation hold all the resolvers related to book mutation
+ * @author       Dipesh Maywade <dipeshmaywade@gmail.com>
+--------------------------------------------------------------------------------*/
+
 const { response } = require('../../type/books');
 const { GraphQLNonNull, GraphQLString, GraphQLID } = require('graphql');
 const loggers = require('../../utility/logger');
@@ -60,6 +67,14 @@ class Mutation {
     },
   };
 
+  /**
+   * @fileds updateBook
+   * @type response
+   * @argument args
+   * @param {resolveParameter} root
+   * @param {resolveParameter} data
+   * @description Update fields provide ability to create new book only for admins
+   */
   updateBook = {
     type: response,
     args: {
@@ -113,6 +128,15 @@ class Mutation {
     },
   };
 
+  /**
+   * @fileds deleteBook
+   * @type response
+   * @argument args
+   * @param {resolveParameter} root
+   * @param {resolveParameter} data
+   * @param {resolveParameter} context
+   * @description deleteBook fields provide ability to delete book data from the DB by Admin.
+   */
   deleteBook = {
     type: response,
     args: {
@@ -134,6 +158,14 @@ class Mutation {
     },
   };
 
+  /**
+   * @fileds addToCart
+   * @type response
+   * @argument args
+   * @param {resolveParameter} root
+   * @param {resolveParameter} data
+   * @description add to cart fields provide ability to add book into the cart by user.
+   */
   addToCart = {
     type: response,
     args: {
@@ -153,6 +185,14 @@ class Mutation {
     },
   };
 
+  /**
+   * @fileds removeFromCart
+   * @type response
+   * @argument args
+   * @param {resolveParameter} root
+   * @param {resolveParameter} data
+   * @description removeCart fields provide ability to remove book from the cart by user.
+   */
   removeFromCart = {
     type: response,
     args: {

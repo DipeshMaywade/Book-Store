@@ -12,13 +12,13 @@ class Authentication {
           const user = jwt.verify(token, process.env.SECRET_KEY);
           return user;
         } catch (error) {
-          loggers.error(`error`, error);
+          loggers.error('error', error);
         }
       }
-      loggers.error(`error`, `wrong Header forment`);
+      loggers.error('error', 'wrong Header forment');
       return null;
     }
-    loggers.error(`error`, `header must be provided`);
+    loggers.error('error', 'header must be provided');
     return null;
   };
 }

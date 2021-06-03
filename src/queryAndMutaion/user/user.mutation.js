@@ -60,15 +60,15 @@ class Mutation {
       }
       try {
         data.password = await passEncrypt(data.password);
-        const userModel = new userRegistration(data);
-        const newUser = await UserCollection.save();
+        const userModel = new UserCollection(data);
+        const newUser = await userModel.save();
         if (!newUser) {
           return { success: false, message: 'failed to save' };
         }
         await verifyMail(newUser.email);
         return { success: true, message: 'new user added successfully...!!' };
       } catch (error) {
-        loggers.error(`error`, error);
+        loggers.error('error', error);
         return { success: false, message: `failed to save ${error}` };
       }
     },
@@ -109,7 +109,7 @@ class Mutation {
         let token = await jwtGenerator(payload);
         return { success: true, message: `Login successfull your token is: ${token} ` };
       } catch (error) {
-        loggers.error(`error`, error);
+        loggers.error('error', error);
         return { success: false, message: 'failed, check your log file' };
       }
     },
@@ -145,7 +145,7 @@ class Mutation {
         await consumefromSQS();
         return { success: true, message: `Mail sent to the registered email id token is ${token}` };
       } catch (error) {
-        loggers.error(`error`, error);
+        loggers.error('error', error);
         return { success: false, message: 'email not sent check your error log file' };
       }
     },
@@ -183,7 +183,7 @@ class Mutation {
           });
           return { success: true, message: 'password updated.' };
         } catch (error) {
-          loggers.error(`error`, error);
+          loggers.error('error', error);
           return { success: false, message: 'check error in your log file' };
         }
       } else {

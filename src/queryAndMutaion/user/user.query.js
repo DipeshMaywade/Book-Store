@@ -13,6 +13,11 @@ const { UserCollection } = require('../../models/user');
 const logger = require('../../utility/logger');
 
 class Query {
+  /**
+   * @fileds getUser
+   * @type response
+   * @description getting all the user from database
+   */
   getUser = {
     type: new GraphQLList(userType),
     resolve: async () => {

@@ -1,3 +1,11 @@
+/**
+ * @module        type
+ * @file          user.js
+ * @description   define two graphQL schema(userType, response) which is used by query and mutation related to users
+ * @requires      graphql{@linkhttps://www.npmjs.com/package/graphql}
+ * @author        Dipesh Maywade <dipeshmaywade@gmail.com>
+----------------------------------------------------------------------------------------------------*/
+
 const { GraphQLObjectType, GraphQLString, GraphQLID } = require('graphql');
 
 const userType = new GraphQLObjectType({

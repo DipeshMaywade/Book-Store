@@ -1,3 +1,11 @@
+/**
+ * @module        type
+ * @file          book.js
+ * @description   define two graphQL schema(bookType, response) which is used by query and mutation
+ * @requires      graphql{@linkhttps://www.npmjs.com/package/graphql}
+ * @author        Dipesh Maywade <dipeshmaywade@gmail.com>
+----------------------------------------------------------------------------------------------------*/
+
 const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQGraphQLList } = require('graphql');
 
 const bookType = new GraphQLObjectType({
@@ -24,5 +32,3 @@ const response = new GraphQLObjectType({
 });
 
 module.exports = { bookType, response };
-// Test Case
-// eslint
