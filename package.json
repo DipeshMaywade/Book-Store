@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
+    "consume": "sudo docker-compose",
     "lint": "./node_modules/.bin/eslint"
   },
   "repository": {
