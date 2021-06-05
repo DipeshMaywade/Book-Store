@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "docker": "sudo docker-compose up",
-    "lint": "./node_modules/.bin/eslint"
+    "lint": "./node_modules/.bin/eslint",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,8 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^7.27.0",
-    "nodemon": "^2.0.7"
+    "jest": "^27.0.4",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }
