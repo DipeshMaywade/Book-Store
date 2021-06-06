@@ -15,7 +15,7 @@ test("fetch users", (done) => {
     .end(function (err, res) {
       if (err) console.log(err);
       expect(res.body).toBeInstanceOf(Object);
-      expect(res.body.data.getUser.length).toEqual(2);
+      expect(res.body.data.getUser.length).toEqual(3);
       done();
     });
 });

@@ -10,6 +10,7 @@
 
 var blueBird = require('bluebird');
 var mongoose = require('mongoose');
+const logger = require('../src/utility/logger');
 require('dotenv').config();
 
 ('use strict');
@@ -49,24 +50,24 @@ MongoDBAdapter.prototype.connect = function () {
   return new blueBird(
     function (resolve, reject) {
       if (isState('connected')) {
-        console.log(DEBUG_ALREADY_CONNECTED);
+        logger.log('info', DEBUG_ALREADY_CONNECTED)
         return resolve(this.uri);
       }
 
       this.addConnectionListener('error', function (err) {
-        console.log(DEBUG_CONNECTION_ERROR, this.uri);
+        logger.log('error', DEBUG_CONNECTION_ERROR, this.uri);
         return reject(err);
       });
 
       this.addConnectionListener('open', function () {
-        console.log(DEBUG_CONNECTED, this.uri);
+        logger.log('info',DEBUG_CONNECTED, this.uri);
         return resolve(this.uri);
       });
 
       if (isState('connecting')) {
-        console.log(DEBUG_ALREADY_CONNECTING, this.uri);
+        logger.log('info', DEBUG_ALREADY_CONNECTING, this.uri);
       } else {
-        console.log(DEBUG_CONNECTING, this.uri);
+        logger.log('info', DEBUG_CONNECTING, this.uri);
         mongoose.connect(this.uri, this.options);
       }
     }.bind(this)
@@ -81,24 +82,24 @@ MongoDBAdapter.prototype.disconnect = function () {
   return new blueBird(
     function (resolve, reject) {
       if (isState('disconnected') || isState('uninitialized')) {
-        console.log(DEBUG_ALREADY_DISCONNECTED, this.uri);
+        logger.log('info', DEBUG_ALREADY_DISCONNECTED, this.uri);
         return resolve(this.uri);
       }
 
       this.addConnectionListener('error', function (err) {
-        console.log(DEBUG_DISCONNECTION_ERROR, this.uri);
+        logger.log('info', DEBUG_DISCONNECTION_ERROR, this.uri);
         return reject(err);
       });
 
       this.addConnectionListener('disconnected', function () {
-        console.log(DEBUG_DISCONNECTED, this.uri);
+        logger.log('info', DEBUG_DISCONNECTED, this.uri);
         return resolve(this.uri);
       });
 
       if (isState('disconnecting')) {
-        console.log(DEBUG_ALREADY_DISCONNECTING, this.uri);
+        logger.log('info', DEBUG_ALREADY_DISCONNECTING, this.uri);
       } else {
-        console.log(DEBUG_DISCONNECTING, this.uri);
+        logger.log('info', DEBUG_DISCONNECTING, this.uri);
         mongoose.disconnect();
       }
     }.bind(this)
