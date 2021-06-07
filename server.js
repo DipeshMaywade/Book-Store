@@ -18,9 +18,9 @@ app.use(
   })
 );
 
-app.listen(port, () => {
+serverInstance = app.listen(port, () => {
   logger.log('info', `Server Runing at http://${host}:${port}`);
   console.log('info', `Server Runing at http://${host}:${port}`);
 });
 
-module.exports = app;
+module.exports = { app, serverInstance };

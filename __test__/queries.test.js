@@ -1,6 +1,19 @@
-const app = require("../server");
+const {app, serverInstance} = require("../server");
 const supertest = require("supertest");
 const request = supertest(app);
+const  {MongoDBAdapter} = require("../config/dbConfig")
+
+afterAll(done => {
+  serverInstance.close()
+  let db = new MongoDBAdapter(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  });
+  db.disconnect()
+  done();
+});
 
 test("fetch users", (done) => {
 
@@ -19,3 +32,4 @@ test("fetch users", (done) => {
       done();
     });
 });
+

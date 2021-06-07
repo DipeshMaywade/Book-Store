@@ -117,9 +117,11 @@ let db = new MongoDBAdapter(process.env.DB_URL, {
 });
 db.connect()
   .then((uri) => {
-    console.log('Connected to ' + uri);
+  //  console.log('Connected to ' + uri);
   })
   .catch((uri) => {
     db.disconnect();
     console.log('Disconnected from ' + uri);
   });
+
+  module.exports = {MongoDBAdapter}
