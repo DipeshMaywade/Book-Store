@@ -40,25 +40,25 @@
 
 > - **[Visual Studio Code](https://www.youtube.com/watch?v=MlIzFUI1QGA)**(Code Editor IDE)
 > - **[MongoDB Compass](https://www.youtube.com/watch?v=FwMwO8pXfq0)**(Database and UI)
-> - **[Redis](https://www.youtube.com/watch?v=188Fy-oCw4w)**(For Caching)
 > - **[GraphiQL](https://www.electronjs.org/apps/graphiql)**(For Testing)
 > - **[Postman](https://www.youtube.com/watch?v=MCPdfuzmyxY)**(For Testing)
 
 ### Dependencies that are needed to be installed
 
+> - "aws-sdk": "^2.918.0"
 > - "bcrypt": "^5.0.1"
-> - "bluebird": "^3.5.1"
-> - "dotenv": "^8.2.0"
+> - "bluebird": "^3.7.2"
+> - "dotenv": "^10.0.0"
+> - "easygraphql-tester": "^6.0.1"
 > - "express": "^4.17.1"
 > - "express-graphql": "^0.12.0"
 > - "graphql": "^15.5.0"
 > - "joi": "^17.4.0"
 > - "jsonwebtoken": "^8.5.1"
-> - "mongodb": "^3.6.6"
-> - "mongoose": "^5.12.5"
-> - "nodemailer": "^6.6.0"
+> - "mongodb": "^3.6.9"
+> - "mongoose": "^5.12.12"
+> - "sqs-consumer": "^5.5.0"
 > - "winston": "^3.3.3"
-> - "eslint": "^6.8.0"
 
 ### Short description about installed npm packages.
 
@@ -102,10 +102,80 @@
 
 > **[Mongoose](https://www.npmjs.com/package/mongoose)** is a MongoDB object modeling tool designed to work in an asynchronous environment. Mongoose supports both promises and callbacks.
 
-**redis**
-
-> **[Redis](https://www.npmjs.com/package/redis)** is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker. Redis provides data structures such as strings, hashes, lists, sets, sorted sets with range queries, bitmaps, hyperloglogs, geospatial indexes, and streams.
-
 **aws-sdk**
 
 > **[aws-sdk](https://www.npmjs.com/package/aws-sdk)** The AWS SDK for JavaScript v3 API Reference Guide provides a JavaScript API for AWS services. You can use the JavaScript API to build libraries or applications for Node.js or the browser.
+
+## Book-Store Production Documentation
+
+### Application deployment on AWS EC2 Instance With Jenkins
+
+> - Log into your AWS console search for and select EC2
+> - You have to create two instances for jenkins and your app server separately.
+> - Beginning with creating a jenkins server.
+> - Select Launch Instance
+> - Choose Ubuntu Server 16.04 LTS (HVM), SSD Volume Type. Select the free tiered Ubuntu Server 16.04 LTS
+> - Choose an Instance Type and choose next.
+> - Configure Security Group and choose Create a new security group
+> - Confirm that port 22 is configured to allow access to your VM and also add a new security group choose custom tcp rule and set the port range to 8080 and next type 0.0.0.0/0 in source.
+> - Finally review and launch.
+> - After you select Launch you will be prompted to Select an existing key pair or to create one.
+> - Create a new key pair and download it.
+> - Now open the terminal and go to the folder you have downloaded the key pair and connect to the instance by firing the commands which is mentioned.
+> - Install Java : https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04
+> - Go through this link and install jenkins : https://medium.com/@Marklon/how-to-install-jenkins-on-ubuntu-16-04-on-aws-e584c45c2684
+> - Check the status and configure the firewall settings.
+> - Once you've logged in click on new item and type the name of your jenkins project and choose freestyle project.
+> - In the general option select GitHub project and paste the URL of your GitHub repository.
+> - Under the source code management choose git and paste the URL of your github repository.
+> - Under build triggers choose GitHub hook trigger for GITScm polling.
+> - Under build choose execute shell and write the script
+> - Apply and save.
+> - Go to your GitHub and open the settings of the repository you want to deploy and click on webhooks and then add webhook, in the payload URL type http://yourJenkinsPublicIP:8080/github-webhook/ and then click on add webhook. If it shows a green tick the webhook has been added successfully.
+> - Go to Jenkins and then go to the project and click on build now. It'll show a blue indication if it's successful.
+> - Now we have to integrate the jenkins and the node app servers.
+> - Connect to the instances on separate terminals.
+> - SSH to jenkins (in the jenkins terminal)
+
+       * Switch to Jenkins user -  sudo su Jenkins
+       * Generate ssh key -  ssh-keygen -t rsa
+       * Save the generated key in /var/lib/jenkins/.ssh/id_rsa
+       * Leave the passphrase empty
+       * Print the SSH key you just created -  cat ~/.ssh/id_rsa.pub
+       * Copy this Key
+
+> - SSH to your app server
+
+       • Open the file where authorized keys are stored -
+          nano ~/.ssh/authorized_keys
+       • Paste the key which you copied
+         (Ctrl+S and then Ctrl+X then Y then Enter)
+
+> - To check whether your Jenkins server already has SSH access to node-app server without entering a password. Run these command:
+>   sudo su - jenkins
+>   ssh ubuntu@NODE.APP.SERVER.PRIVATE.IP
+> - Copy your project from jenkins workspace to app server by the following command in the jenkins terminal:
+>   sudo su jenkins
+>   scp -r /var/lib/jenkins/workspace/{nameOfYourProject} ubuntu@NODE.SERVER.PRIVATE.IP:/home/ubuntu
+> - ssh into app server and check if your project has been copied by running the command ls
+> - Once it's copied Install all the necessary things like node,npm,mongoDb,redis etc and then go to your project directory and create the .env and later install all the dependencies by running "npm i"
+> - Start your server
+> - Type the public ip of your appServer followed by the port number of your app and check if it has been deployed.
+
+> - Check the following links :
+>   **[aws-jenkins part-1](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-1-installing-jenkins-on-ec2-24675cc08998)**
+>   **[aws-jenkins part-2](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-2-creating-a-node-js-app-3a0fb6b63bc7)**
+>   **[aws-jenkins part-3](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-3-jenkins-node-js-app-integration-1fa9d1306d25)**
+
+## Docker Containerization
+
+> Create a docker file and add the neccessary data
+> fire the command docker build -t <nameOfTheImage> .
+> and then run the image
+> Create a docker-compose.yml to integrate with mongoDb
+> fire docker-compose up
+
+### Reference :
+
+**[Docker-Commands](https://gist.github.com/bradtraversy/89fad226dc058a41b596d586022a9bd3)**
+**[Video ref](https://www.youtube.com/watch?v=hP77Rua1E0c)**
