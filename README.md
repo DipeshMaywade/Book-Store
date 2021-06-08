@@ -163,17 +163,20 @@
 > - Type the public ip of your appServer followed by the port number of your app and check if it has been deployed.
 
 > - Check the following links :
->   **[aws-jenkins part-1](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-1-installing-jenkins-on-ec2-24675cc08998)**
->   **[aws-jenkins part-2](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-2-creating-a-node-js-app-3a0fb6b63bc7)**
->   **[aws-jenkins part-3](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-3-jenkins-node-js-app-integration-1fa9d1306d25)**
+
+**[aws-jenkins part-1](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-1-installing-jenkins-on-ec2-24675cc08998)**
+
+**[aws-jenkins part-2](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-2-creating-a-node-js-app-3a0fb6b63bc7)**
+
+**[aws-jenkins part-3](https://medium.com/konvergen/jenkins-for-node-js-app-on-aws-ec2-part-3-jenkins-node-js-app-integration-1fa9d1306d25)**
 
 ## Docker Containerization
 
-> Create a docker file and add the neccessary data
-> fire the command docker build -t <nameOfTheImage> .
-> and then run the image
-> Create a docker-compose.yml to integrate with mongoDb
-> fire docker-compose up
+> - Create a docker file and add the neccessary data
+> - fire the command docker build -t <nameOfTheImage> .
+> - and then run the image
+> - Create a docker-compose.yml to integrate with mongoDb
+> - fire docker-compose up
 
 ### Reference :
 
