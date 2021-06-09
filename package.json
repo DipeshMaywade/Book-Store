@@ -7,7 +7,7 @@
     "start": "nodemon server.js",
     "docker": "sudo docker-compose up",
     "lint": "./node_modules/.bin/eslint",
-    "test": "jest"
+    "test": "mocha test/user/user.test.js"
   },
   "repository": {
     "type": "git",
@@ -37,9 +37,9 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "chai": "^4.3.4",
     "eslint": "^7.27.0",
-    "jest": "^27.0.4",
-    "nodemon": "^2.0.7",
-    "supertest": "^6.1.3"
+    "mocha": "^9.0.0",
+    "nodemon": "^2.0.7"
   }
 }
