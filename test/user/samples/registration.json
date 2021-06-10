@@ -1,3 +1,0 @@
-{
-    "validMutation": "mutation{addUser(firstName:'Dipesh' lastName:'Maywade' email:'dipesh111@gmail.com' password:'Deep@123' role:Admin){ success message } }"
-}
