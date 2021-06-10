@@ -7,7 +7,7 @@
     "start": "nodemon server.js",
     "docker": "sudo docker-compose up",
     "lint": "./node_modules/.bin/eslint",
-    "test": "mocha test/user/user.test.js"
+    "test": "nyc mocha test/user"
   },
   "repository": {
     "type": "git",
