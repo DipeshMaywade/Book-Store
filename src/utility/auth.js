@@ -17,10 +17,10 @@ class Authentication {
         }
       }
       loggers.error('error', 'wrong Header forment');
-      return { error: 'invalid token' };
+      return null;
     }
     loggers.error('error', 'header must be provided');
-    return { error: 'invalid token' };
+    return null;
   };
 }
 module.exports = new Authentication();
