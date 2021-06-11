@@ -1,0 +1,10 @@
+{
+    "books": {
+        "validToken":{
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjBiNTFiZDIyMTJmN2MyMDQwMzc1MWI4IiwiZW1haWwiOiJkaXBlc2htYXl3YWRlQGdtYWlsLmNvbSIsInJvbGUiOiJBZG1pbiJ9LCJpYXQiOjE2MjM0MDM3NTgsImV4cCI6MTYyMzQwNzM1OH0.VxjteB8tn_EiRwSm8IEDBODVoBzpk3YCT0wlZp2CdDM"
+        },
+        "invalidToken":{
+            "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9jdsfh0-fwej.kljk.eyJwYXlsb2FkIjp7ImlkIjoiNjBiNTFiZDIyMTJmN2MyMDQwMzc1MWI4IiwiZW1haWwiOiJkaXBlc2htYXl3YWRlQGdtYWlsLmNvbSIsInJvbGUiOiJBZG1pbiJ9LCJpYXQiOjE2MjM0MDE0NjgsImV4cCI6MTYyMzQwNTA2OH0.FNC0vaad1Yf1zTbTdTctazKZ1Y-TEkktAFpwoUoYg5g"
+        }
+    }
+}
