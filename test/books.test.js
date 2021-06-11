@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 
 describe('Books query and mutation test', () => {
   describe('test getAllBooks query ', () => {
-    it('should pass for valid credentials', (done) => {
+    it('should pass for valid credentials for getAllBooks', (done) => {
       chai
         .request(server)
         .post('/BookStore/')
@@ -44,6 +44,79 @@ describe('Books query and mutation test', () => {
           response.should.have.status(200);
           response.body.should.be.a('Object');
           response.body.data.getAllBooks[0].title.should.have.equal('please login first');
+        });
+      done();
+    });
+  });
+
+  describe('test addBook mutation ', () => {
+    it('should pass for valid credentials for addBook', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.addBook.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addBook.success.should.have.equal('true');
+        });
+      done();
+    });
+
+    it('should got login error for invalid token', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.invalidToken.token)
+        .send({ query: sampleData.books.addBook.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addBook.success.should.have.equal('false');
+          response.body.data.addBook.message.should.have.equal('please log in first');
+        });
+      done();
+    });
+
+    it('should got login error if user login from user id', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.userValidToken.token)
+        .send({ query: sampleData.books.addBook.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addBook.success.should.have.equal('false');
+          response.body.data.addBook.message.should.have.equal('only admin has ability to update book details please login as an admin');
+        });
+      done();
+    });
+
+    it('should response success false if validation failed', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.addBook.inValidData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addBook.success.should.have.equal('false');
+          response.body.data.addBook.message.should.have.equal('Validation failed');
+        });
+      done();
+    });
+
+    it('should got 400 response for invalid query', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.addBook.inValidQuery })
+        .end((error, response) => {
+          response.should.have.status(400);
         });
       done();
     });

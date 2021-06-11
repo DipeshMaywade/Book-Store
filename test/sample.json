@@ -1,10 +1,18 @@
 {
     "books": {
         "validToken":{
-            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjBiNTFiZDIyMTJmN2MyMDQwMzc1MWI4IiwiZW1haWwiOiJkaXBlc2htYXl3YWRlQGdtYWlsLmNvbSIsInJvbGUiOiJBZG1pbiJ9LCJpYXQiOjE2MjM0MDM3NTgsImV4cCI6MTYyMzQwNzM1OH0.VxjteB8tn_EiRwSm8IEDBODVoBzpk3YCT0wlZp2CdDM"
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjBiNTFiZDIyMTJmN2MyMDQwMzc1MWI4IiwiZW1haWwiOiJkaXBlc2htYXl3YWRlQGdtYWlsLmNvbSIsInJvbGUiOiJBZG1pbiJ9LCJpYXQiOjE2MjM0MzUyMzgsImV4cCI6MTYyMzQzODgzOH0.5EcfX_IXJKi8KXOcFmTI-8DktPuKvtUvhkuqwUBwodI"
         },
         "invalidToken":{
             "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9jdsfh0-fwej.kljk.eyJwYXlsb2FkIjp7ImlkIjoiNjBiNTFiZDIyMTJmN2MyMDQwMzc1MWI4IiwiZW1haWwiOiJkaXBlc2htYXl3YWRlQGdtYWlsLmNvbSIsInJvbGUiOiJBZG1pbiJ9LCJpYXQiOjE2MjM0MDE0NjgsImV4cCI6MTYyMzQwNTA2OH0.FNC0vaad1Yf1zTbTdTctazKZ1Y-TEkktAFpwoUoYg5g"
+        },
+        "userValidToken":{
+            "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjBiNWE2YTY3NzU0MGEzMDRjYzY1ZmFhIiwiZW1haWwiOiJkaXBlc2guYnp1MjBAZ21haWwuY29tIiwicm9sZSI6IlVzZXIifSwiaWF0IjoxNjIzNDM1MTk1LCJleHAiOjE2MjM0Mzg3OTV9.GxszFQMzSeoffkDGe8keZY6bKNAMj1vE-Q_qZX_abnM"
+        },
+        "addBook": {
+            "validData": "mutation{addBook(author:\"Rujuta Divekar\" title:\"Indian Superfoods\" quantity:\"13\" price:\"495\" description:\"Forget about acacia seeds and goji berries. The secret foods for healthvitality and weight loss lie in our own kitchens and backyards. Top nutritionist Rujuta Diwekar talks you through the ten Indian superfoods that will completely transform you\" image:\"http://books.google.com/books/content?id=4oFoDwAAQBAJ&printsec=frontcover&img=1&zoom=5\"){success message data{ author title} } }",
+            "inValidData": "mutation{addBook(author:\"\" title:\"Indian Superfoods\" quantity:\"13\" price:\"495\" description:\"Forget about acacia seeds and goji berries. The secret foods for healthvitality and weight loss lie in our own kitchens and backyards. Top nutritionist Rujuta Diwekar talks you through the ten Indian superfoods that will completely transform you\" image:\"http://books.google.com/books/content?id=4oFoDwAAQBAJ&printsec=frontcover&img=1&zoom=5\"){success message data{ author title} } }",
+            "inValidquery": "mutation{addbook(author:\"\" title:\"Indian Superfoods\" quantity:\"13\" price:\"495\" description:\"Forget about acacia seeds and goji berries. The secret foods for healthvitality and weight loss lie in our own kitchens and backyards. Top nutritionist Rujuta Diwekar talks you through the ten Indian superfoods that will completely transform you\" image:\"http://books.google.com/books/content?id=4oFoDwAAQBAJ&printsec=frontcover&img=1&zoom=5\"){success message data{ author title} } }"
         }
     }
 }
