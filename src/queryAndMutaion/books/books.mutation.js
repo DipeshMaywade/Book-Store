@@ -49,7 +49,9 @@ class Mutation {
         return { success: false, message: 'Validation failed' };
       }
       const verifyAdmin = await checkAuth(context);
-      if (verifyAdmin.payload.role != 'Admin' || !verifyAdmin) {
+      if (verifyAdmin == null) {
+        return { success: false, message: 'please log in first' };
+      } else if (verifyAdmin.payload.role != 'Admin') {
         return { success: false, message: 'only admin has ability to update book details please login as an admin' };
       }
       try {
