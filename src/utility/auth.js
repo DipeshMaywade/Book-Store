@@ -13,13 +13,14 @@ class Authentication {
           return user;
         } catch (error) {
           loggers.error('error', error);
+          return null;
         }
       }
       loggers.error('error', 'wrong Header forment');
-      return null;
+      return { error: 'invalid token' };
     }
     loggers.error('error', 'header must be provided');
-    return null;
+    return { error: 'invalid token' };
   };
 }
 module.exports = new Authentication();
