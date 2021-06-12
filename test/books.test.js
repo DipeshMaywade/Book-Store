@@ -194,4 +194,77 @@ describe('Books query and mutation test', () => {
       done();
     });
   });
+
+  describe('test deleteBook mutation ', () => {
+    // it('should pass for valid credentials for deleteBook', (done) => {
+    //   chai
+    //     .request(server)
+    //     .post('/BookStore/')
+    //     .set('authorization', sampleData.books.validToken.token)
+    //     .send({ query: sampleData.books.deleteBook.validData })
+    //     .end((error, response) => {
+    //       response.should.have.status(200);
+    //       response.body.should.be.a('Object');
+    //       response.body.data.deleteBook.success.should.have.equal('true');
+    //     });
+    //   done();
+    // });
+
+    it('should get 400 response for invalid credentials for deleteBook', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.deleteBook.invalidQuery })
+        .end((error, response) => {
+          response.should.have.status(400);
+        });
+      done();
+    });
+
+    it('should get login error for invalid token', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.invalidToken.token)
+        .send({ query: sampleData.books.deleteBook.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.deleteBook.success.should.have.equal('false');
+          response.body.data.deleteBook.message.should.have.equal('please log in first');
+        });
+      done();
+    });
+
+    it('should response success false if id not found', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.deleteBook.invalidData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.deleteBook.success.should.have.equal('false');
+          response.body.data.deleteBook.message.should.have.equal('failed');
+        });
+      done();
+    });
+
+    it('should get login error if user login from user id', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.userValidToken.token)
+        .send({ query: sampleData.books.deleteBook.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.deleteBook.success.should.have.equal('false');
+          response.body.data.deleteBook.message.should.have.equal('only admin has ability to update book details please login as an admin');
+        });
+      done();
+    });
+  });
 });

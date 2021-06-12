@@ -18,6 +18,11 @@
             "validData": "mutation{updateBook(id:\"60c464bea5c9bb16246bb5f1\" author:\"Deep\" title:\"Indian Superfoods\" quantity:\"13\" price:\"495\" description:\"Forget about acacia seeds and goji berries. The secret foods for healthvitality and weight loss lie in our own kitchens and backyards. Top nutritionist Rujuta Diwekar talks you through the ten Indian superfoods that will completely transform you\" image:\"http://books.google.com/books/content?id=4oFoDwAAQBAJ&printsec=frontcover&img=1&zoom=5\"){success message data{ author title } }}",
             "invalidData": "mutation{updateBook(id:\"60c464bea5c9bb16246bb5f1\" author:\"\" title:\"Indian Superfoods\" quantity:\"13\" price:\"495\" description:\"Forget about acacia seeds and goji berries. The secret foods for healthvitality and weight loss lie in our own kitchens and backyards. Top nutritionist Rujuta Diwekar talks you through the ten Indian superfoods that will completely transform you\" image:\"http://books.google.com/books/content?id=4oFoDwAAQBAJ&printsec=frontcover&img=1&zoom=5\"){success message data{ author title } }}",
             "invalidQuery": "mutation{Book(id:\"60c464bea5c9bb16246bb5f1\" author:\"Deep\" title:\"Indian Superfoods\" quantity:\"13\" price:\"495\" description:\"Forget about acacia seeds and goji berries. The secret foods for healthvitality and weight loss lie in our own kitchens and backyards. Top nutritionist Rujuta Diwekar talks you through the ten Indian superfoods that will completely transform you\" image:\"http://books.google.com/books/content?id=4oFoDwAAQBAJ&printsec=frontcover&img=1&zoom=5\"){success message data{ author title } }}"
+        },
+        "deleteBook":{
+            "validData": "mutation{deleteBook(id:\"60c464bea5c9bb16246bb5f1\"){success message}}",
+            "invalidData": "mutation{deleteBook(id:\"60c464bea5c9bb16246bb5f9\"){success message}}",
+            "invalidQuery": "mutation{Book(id:\"60c464bea5c9bb16246bb5f1\"){success message}}"
         }
     }
 }
