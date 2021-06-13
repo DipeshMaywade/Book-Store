@@ -267,4 +267,120 @@ describe('Books query and mutation test', () => {
       done();
     });
   });
+
+  describe('test addToCart mutation ', () => {
+    it('should pass for valid credentials for addToCart', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.addToCart.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addToCart.success.should.have.equal('true');
+        });
+      done();
+    });
+
+    it('should get 400 response for invalid credentials for addToCart', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.addToCart.invalidQuery })
+        .end((error, response) => {
+          response.should.have.status(400);
+        });
+      done();
+    });
+
+    it('should get login error for invalid token', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.invalidToken.token)
+        .send({ query: sampleData.books.addToCart.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addToCart.success.should.have.equal('false');
+          response.body.data.addToCart.message.should.have.equal('please log in first');
+        });
+      done();
+    });
+
+    it('should response success false if id not found', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.addToCart.invalidData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.addToCart.success.should.have.equal('false');
+          response.body.data.addToCart.message.should.have.equal('failed to add into the cart');
+        });
+      done();
+    });
+  });
+
+  describe('test removeFromCart mutation ', () => {
+    it('should pass for valid credentials for removeFromCart', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.removeFromCart.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.removeFromCart.success.should.have.equal('true');
+        });
+      done();
+    });
+
+    it('should get 400 response for invalid credentials for removeFromCart', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.removeFromCart.invalidQuery })
+        .end((error, response) => {
+          response.should.have.status(400);
+        });
+      done();
+    });
+
+    it('should get login error for invalid token', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.invalidToken.token)
+        .send({ query: sampleData.books.removeFromCart.validData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.removeFromCart.success.should.have.equal('false');
+          response.body.data.removeFromCart.message.should.have.equal('please log in first');
+        });
+      done();
+    });
+
+    it('should response success false if id not found', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore/')
+        .set('authorization', sampleData.books.validToken.token)
+        .send({ query: sampleData.books.removeFromCart.invalidData })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.removeFromCart.success.should.have.equal('false');
+          response.body.data.removeFromCart.message.should.have.equal('failed..');
+        });
+      done();
+    });
+  });
 });
