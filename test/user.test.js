@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server');
+const sampleData = require('./sample.json');
 
 chai.should();
 chai.use(chaiHttp);
@@ -186,6 +187,68 @@ describe('user query and mutation test', () => {
           response.should.have.status(200);
           response.body.should.be.a('Object');
           response.body.data.forgotPassword.success.should.have.equal('false');
+        });
+      done();
+    });
+  });
+
+  describe('test resetPassword mutation ', () => {
+    it('should get success true for valid token for resetPassword', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore')
+        .set('authorization', sampleData.user.validToken.token)
+        .send({ query: 'mutation{resetPassword(newPassword:"Deep@123" confirmPassword:"Deep@123"){success message}}' })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.resetPassword.success.should.have.equal('true');
+          response.body.data.resetPassword.message.should.have.equal('password updated.');
+        });
+      done();
+    });
+
+    it('should get success false invalid token for resetPassword', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore')
+        .set('authorization', sampleData.user.invalidToken.token)
+        .send({ query: 'mutation{resetPassword(newPassword:"Deep@123" confirmPassword:"Deep@123"){success message}}' })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.resetPassword.success.should.have.equal('false');
+          response.body.data.resetPassword.message.should.have.equal('invalid token');
+        });
+      done();
+    });
+
+    it('should get success false if new and confirm password does not matched', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore')
+        .set('authorization', sampleData.user.validToken.token)
+        .send({ query: 'mutation{resetPassword(newPassword:"Deep@123" confirmPassword:"eep@123"){success message}}' })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.resetPassword.success.should.have.equal('false');
+          response.body.data.resetPassword.message.should.have.equal('password does not matched or invalid formate');
+        });
+      done();
+    });
+
+    it('should get success false if validation failed', (done) => {
+      chai
+        .request(server)
+        .post('/BookStore')
+        .set('authorization', sampleData.user.validToken.token)
+        .send({ query: 'mutation{resetPassword(newPassword:"Deep123" confirmPassword:"Deep123"){success message}}' })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.be.a('Object');
+          response.body.data.resetPassword.success.should.have.equal('false');
+          response.body.data.resetPassword.message.should.have.equal('password does not matched or invalid formate');
         });
       done();
     });
