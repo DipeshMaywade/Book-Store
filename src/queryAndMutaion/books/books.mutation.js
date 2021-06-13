@@ -54,18 +54,13 @@ class Mutation {
       } else if (verifyAdmin.payload.role != 'Admin') {
         return { success: false, message: 'only admin has ability to update book details please login as an admin' };
       }
-      try {
-        data.adminId = verifyAdmin.payload.id;
-        const bookModel = new Book(data);
-        const newBook = await bookModel.save();
-        if (!newBook) {
-          return { success: false, message: 'failed to save' };
-        }
-        return { success: true, message: 'new Book added successfully...!!', data: newBook };
-      } catch (error) {
-        loggers.error(`error`, error);
-        return { success: false, message: `failed to save ${error}` };
+      data.adminId = verifyAdmin.payload.id;
+      const bookModel = new Book(data);
+      const newBook = await bookModel.save();
+      if (!newBook) {
+        return { success: false, message: 'failed to save' };
       }
+      return { success: true, message: 'new Book added successfully...!!', data: newBook };
     },
   };
 
@@ -107,28 +102,23 @@ class Mutation {
       if (result.error) {
         return { success: false, message: 'Validation failed' };
       }
-      try {
-        const verifyAdmin = await checkAuth(context);
-        if (verifyAdmin == null) {
-          return { success: false, message: 'please log in first' };
-        } else if (verifyAdmin.payload.role != 'Admin') {
-          return { success: false, message: 'only admin has ability to update book details please login as an admin' };
-        }
-        const updatedBook = {
-          author: args.author,
-          title: args.title,
-          quantity: args.quantity,
-          price: args.price,
-          description: args.description,
-          image: args.image,
-          adminId: verifyAdmin.payload.id,
-        };
-        const booksUpdate = await Book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
-        return !booksUpdate ? { success: false, message: 'failed' } : { success: true, message: 'Book Updated', data: booksUpdate };
-      } catch (error) {
-        loggers.error(`error`, error);
-        return { title: error };
+      const verifyAdmin = await checkAuth(context);
+      if (verifyAdmin == null) {
+        return { success: false, message: 'please log in first' };
+      } else if (verifyAdmin.payload.role != 'Admin') {
+        return { success: false, message: 'only admin has ability to update book details please login as an admin' };
       }
+      const updatedBook = {
+        author: args.author,
+        title: args.title,
+        quantity: args.quantity,
+        price: args.price,
+        description: args.description,
+        image: args.image,
+        adminId: verifyAdmin.payload.id,
+      };
+      const booksUpdate = await Book.findOneAndUpdate({ _id: args.id }, updatedBook, { new: true });
+      return !booksUpdate ? { success: false, message: 'failed' } : { success: true, message: 'Book Updated', data: booksUpdate };
     },
   };
 
