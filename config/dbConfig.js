@@ -50,7 +50,7 @@ MongoDBAdapter.prototype.connect = function () {
   return new blueBird(
     function (resolve, reject) {
       if (isState('connected')) {
-        logger.log('info', DEBUG_ALREADY_CONNECTED)
+        logger.log('info', DEBUG_ALREADY_CONNECTED);
         return resolve(this.uri);
       }
 
@@ -60,7 +60,7 @@ MongoDBAdapter.prototype.connect = function () {
       });
 
       this.addConnectionListener('open', function () {
-        logger.log('info',DEBUG_CONNECTED, this.uri);
+        logger.log('info', DEBUG_CONNECTED, this.uri);
         return resolve(this.uri);
       });
 
@@ -78,33 +78,33 @@ MongoDBAdapter.prototype.connect = function () {
  * @description Returns a promise that gets resolved when successfully disconnected to MongoDB URI
  * @returns {Promise} Returns promise
  */
-MongoDBAdapter.prototype.disconnect = function () {
-  return new blueBird(
-    function (resolve, reject) {
-      if (isState('disconnected') || isState('uninitialized')) {
-        logger.log('info', DEBUG_ALREADY_DISCONNECTED, this.uri);
-        return resolve(this.uri);
-      }
+// MongoDBAdapter.prototype.disconnect = function () {
+//   return new blueBird(
+//     function (resolve, reject) {
+//       if (isState('disconnected') || isState('uninitialized')) {
+//         logger.log('info', DEBUG_ALREADY_DISCONNECTED, this.uri);
+//         return resolve(this.uri);
+//       }
 
-      this.addConnectionListener('error', function (err) {
-        logger.log('info', DEBUG_DISCONNECTION_ERROR, this.uri);
-        return reject(err);
-      });
+//       this.addConnectionListener('error', function (err) {
+//         logger.log('info', DEBUG_DISCONNECTION_ERROR, this.uri);
+//         return reject(err);
+//       });
 
-      this.addConnectionListener('disconnected', function () {
-        logger.log('info', DEBUG_DISCONNECTED, this.uri);
-        return resolve(this.uri);
-      });
+//       this.addConnectionListener('disconnected', function () {
+//         logger.log('info', DEBUG_DISCONNECTED, this.uri);
+//         return resolve(this.uri);
+//       });
 
-      if (isState('disconnecting')) {
-        logger.log('info', DEBUG_ALREADY_DISCONNECTING, this.uri);
-      } else {
-        logger.log('info', DEBUG_DISCONNECTING, this.uri);
-        mongoose.disconnect();
-      }
-    }.bind(this)
-  );
-};
+//       if (isState('disconnecting')) {
+//         logger.log('info', DEBUG_ALREADY_DISCONNECTING, this.uri);
+//       } else {
+//         logger.log('info', DEBUG_DISCONNECTING, this.uri);
+//         mongoose.disconnect();
+//       }
+//     }.bind(this)
+//   );
+// };
 
 /**
  * @description createconstructor instance and call connect and disconect method
@@ -117,11 +117,12 @@ let db = new MongoDBAdapter(process.env.DB_URL, {
 });
 db.connect()
   .then((uri) => {
-  //  console.log('Connected to ' + uri);
+    //  console.log('Connected to ' + uri);
   })
-  .catch((uri) => {
-    db.disconnect();
-    console.log('Disconnected from ' + uri);
+  .catch((err) => {
+    logger.log('error', err);
+    // db.disconnect();
+    // console.log('Disconnected from ' + uri);
   });
 
-  module.exports = {MongoDBAdapter}
+module.exports = { MongoDBAdapter };
