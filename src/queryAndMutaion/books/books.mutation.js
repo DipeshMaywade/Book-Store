@@ -179,8 +179,12 @@ class Mutation {
         type: new GraphQLNonNull(GraphQLID),
       },
     },
-    resolve: async (root, args) => {
+    resolve: async (root, args, context) => {
       try {
+        const verifyAdmin = await checkAuth(context);
+        if (verifyAdmin == null) {
+          return { success: false, message: 'please log in first' };
+        }
         const addToBag = await Book.findByIdAndUpdate(args.id, { isAddedToBag: true }, { new: true });
         return !addToBag
           ? { success: false, message: 'failed to add into the cart' }
@@ -206,8 +210,12 @@ class Mutation {
         type: new GraphQLNonNull(GraphQLID),
       },
     },
-    resolve: async (root, args) => {
+    resolve: async (root, args, context) => {
       try {
+        const verifyAdmin = await checkAuth(context);
+        if (verifyAdmin == null) {
+          return { success: false, message: 'please log in first' };
+        }
         const data = await Book.findByIdAndUpdate(args.id, { isAddedToBag: false });
         return !data ? { success: false, message: 'failed..' } : { success: true, message: 'Book removed from the cart', data: data };
       } catch (error) {
